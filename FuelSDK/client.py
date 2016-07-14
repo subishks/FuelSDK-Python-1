@@ -178,12 +178,7 @@ class ET_Client(object):
         #If we don't already have a token or the token expires within 5 min(300 seconds), get one
         if (force_refresh or self.authToken is None or (self.authTokenExpiration is not None and time.time() + 300 > self.authTokenExpiration)):
             headers = {'content-type' : 'application/json'}
-            if (self.authToken is None):
-                payload = {'clientId' : self.client_id, 'clientSecret' : self.client_secret, 'accessType': 'offline'}
-            else:
-                payload = {'clientId' : self.client_id, 'clientSecret' : self.client_secret, 'refreshToken' : self.refreshKey, 'accessType': 'offline'}
-            if self.refreshKey:
-                payload['refreshToken'] = self.refreshKey
+            payload = {'clientId' : self.client_id, 'clientSecret' : self.client_secret, 'accessType': 'offline'}
 
             r = requests.post(self.auth_url, data=json.dumps(payload), headers=headers)
             tokenResponse = r.json()
@@ -194,9 +189,7 @@ class ET_Client(object):
             self.authToken = tokenResponse['accessToken']
             self.authTokenExpiration = time.time() + tokenResponse['expiresIn']
             self.internalAuthToken = tokenResponse['legacyToken']
-            if 'refreshToken' in tokenResponse:
-                self.refreshKey = tokenResponse['refreshToken']
-        
+ 
             self.build_soap_client()
             
 
