@@ -144,7 +144,7 @@ class ET_Configure(ET_Constructor):
 ########
 class ET_Get(ET_Constructor):
     def __init__(self, auth_stub, obj_type, props = None, search_filter = None, options = None):        
-        auth_stub.refresh_token()
+        #auth_stub.refresh_token()
         
         if props is None:   #if there are no properties to retrieve for the obj_type then return a Description of obj_type
             describe = ET_Describe(auth_stub, obj_type)
